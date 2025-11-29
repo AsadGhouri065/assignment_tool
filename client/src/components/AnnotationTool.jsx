@@ -3,7 +3,7 @@ import {Container, Row, Col, Alert, Spinner, Button, ProgressBar, Form, Badge} f
 import VideoPlayer from './VideoPlayer';
 import PlateDisplay from './PlateDisplay';
 import DmvPanel from './DmvPanel';
-import {getNextEvent, submitAnnotation} from '../services/backend-apis.js';
+import {getNextEvent} from '../services/backend-apis.js';
 
 const AnnotationTool = ({user}) => {
     const [event, setEvent] = useState(null);
