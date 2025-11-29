@@ -1,25 +1,33 @@
 const express = require('express');
 const router = express.Router();
 
+// Mock DMV database - vehicle options
+const VEHICLE_MAKES = ['Toyota', 'Honda', 'Ford', 'Chevrolet', 'Nissan'];
+const VEHICLE_MODELS = ['Camry', 'Civic', 'F-150', 'Malibu', 'Altima'];
+const VEHICLE_COLORS = ['Silver', 'Black', 'White', 'Blue', 'Red'];
+
 router.post('/lookup', (req, res) => {
-    const { plateNumber } = req.body;
+    try {
+        const { plateNumber } = req.body;
 
-    const makes = ['Toyota', 'Honda', 'Ford', 'Chevrolet', 'Nissan'];
-    const models = ['Camry', 'Civic', 'F-150', 'Malibu', 'Altima'];
-    const colors = ['Silver', 'Black', 'White', 'Blue', 'Red'];
+        if (!plateNumber || typeof plateNumber !== 'string') {
+            return res.status(400).json({ error: 'Plate number is required' });
+        }
 
-    const hash = plateNumber.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+        // Return random vehicle information for demo purposes
+        const make = VEHICLE_MAKES[Math.floor(Math.random() * VEHICLE_MAKES.length)];
+        const model = VEHICLE_MODELS[Math.floor(Math.random() * VEHICLE_MODELS.length)];
+        const color = VEHICLE_COLORS[Math.floor(Math.random() * VEHICLE_COLORS.length)];
 
-    const make = makes[hash % makes.length];
-    const model = models[hash % models.length];
-    const color = colors[hash % colors.length];
-
-    res.json({
-        plateNumber,
-        make,
-        model,
-        color
-    });
+        res.json({
+            plateNumber: plateNumber.toUpperCase(),
+            make,
+            model,
+            color
+        });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to lookup plate number' });
+    }
 });
 
 module.exports = router;
